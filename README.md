@@ -49,8 +49,8 @@ This workspace contains a complete, working reference implementation and interac
 ## ⚡ How to Run
 
 ### 1. Interactive Web Application
-The local web server is currently running at:
-👉 **[http://localhost:3000](http://localhost:3000)**
+- 🌐 **Live Public Demo (GitHub Pages):** **[https://shashikutti.github.io/chatagent/](https://shashikutti.github.io/chatagent/)**
+- 💻 **Local Dev Server:** Run `python3 server.py` and open **[http://localhost:3000](http://localhost:3000)**
 
 You can open this URL in your browser to interact with the agent, test tool calls, inspect the raw JSON context payload sent to the LLM, and customize hyperparameters like temperature and system instructions.
 
