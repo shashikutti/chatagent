@@ -77,7 +77,7 @@ const state = {
   temperature: 0.7,
   maxHistory: 20,
   apiKey: "",
-  model: "gemini-3.6-flash",
+  model: "gemini-2.5-flash",
   messages: [], // Array of { id, role: 'user'|'assistant'|'tool', content, tool_calls, tool_result, timestamp }
   activeTools: {
     web_search: true,
@@ -129,7 +129,13 @@ const elements = {
 
 // Initialize Application
 function init() {
+  // Load saved API key from localStorage if available
+  const savedKey = localStorage.getItem('nexus_gemini_api_key');
+  if (savedKey) {
+    state.apiKey = savedKey;
+  }
   setupEventListeners();
+  updateModeBadge();
   updateSystemPromptDisplay();
   autoResizeTextarea();
 }
@@ -278,6 +284,11 @@ function saveSettings() {
   state.temperature = parseFloat(elements.tempSlider.value);
   state.maxHistory = parseInt(elements.maxHistorySelect.value, 10);
   state.apiKey = elements.apiKeyInput.value.trim();
+  if (state.apiKey) {
+    localStorage.setItem('nexus_gemini_api_key', state.apiKey);
+  } else {
+    localStorage.removeItem('nexus_gemini_api_key');
+  }
   updateModeBadge();
   closeSettingsModal();
 }
@@ -361,9 +372,15 @@ async function handlePromptSubmit() {
 
   // 3. ReAct Agent Reasoning & Generation Loop
   try {
-    if (state.apiKey) {
-      // Live API Call to Gemini API (or proxy)
+    if (state.model !== 'custom-sim' && state.apiKey) {
+      // Live API Call to Gemini API
       await runLiveGeminiAgent(assistantMsgId, promptText);
+    } else if (state.model !== 'custom-sim' && !state.apiKey) {
+      // User selected a real Gemini model but hasn't entered an API key yet
+      updateAssistantBubbleText(
+        assistantMsgId,
+        `🔑 **Gemini API Key Required**\n\nYou have selected **${state.model}**, which calls Google's actual Gemini LLM.\n\nPlease click **[API Connection]** in the top-right header or open **Settings** to enter your Gemini API key.\n\n*Don't have a key yet? You can generate a free Gemini key in seconds at [aistudio.google.com](https://aistudio.google.com/app/apikey). You can also switch the model dropdown to **Local ReAct Agent (Interactive Simulator)** to test without an API key.*`
+      );
     } else {
       // Local ReAct Agent Simulator (Demonstrates tool execution + streaming response)
       await runSimulatedAgent(assistantMsgId, promptText);
