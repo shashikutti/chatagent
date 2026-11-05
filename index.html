@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus AI Agent — Interactive Chat Agent Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <span class="brand-name">NexusAgent <span class="badge">v2.4</span></span>
+        </div>
+        <button class="icon-btn new-chat-btn" id="newChatBtn" title="New Conversation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="preset-section">
+        <div class="section-title">Agent Archetypes</div>
+        <div class="archetype-list">
+          <button class="archetype-card active" data-persona="helpful">
+            <div class="archetype-icon">🤖</div>
+            <div class="archetype-info">
+              <div class="archetype-name">General Assistant</div>
+              <div class="archetype-desc">Balanced, versatile ChatGPT persona</div>
+            </div>
+          </button>
+          <button class="archetype-card" data-persona="coder">
+            <div class="archetype-icon">💻</div>
+            <div class="archetype-info">
+              <div class="archetype-name">Senior Code Architect</div>
+              <div class="archetype-desc">Optimized for debugging & clean code</div>
+            </div>
+          </button>
+          <button class="archetype-card" data-persona="analyst">
+            <div class="archetype-icon">📊</div>
+            <div class="archetype-info">
+              <div class="archetype-name">Data & Math Agent</div>
+              <div class="archetype-desc">Tool-calling specialist for data</div>
+            </div>
+          </button>
+          <button class="archetype-card" data-persona="researcher">
+            <div class="archetype-icon">🔎</div>
+            <div class="archetype-info">
+              <div class="archetype-name">Autonomous Researcher</div>
+              <div class="archetype-desc">ReAct web search & synthesis</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="tools-toggle-section">
+        <div class="section-title">Active Capabilities (Tools)</div>
+        <div class="tool-chips">
+          <label class="tool-chip">
+            <input type="checkbox" id="toolWebSearch" checked>
+            <span class="chip-label">🌐 Web Search</span>
+          </label>
+          <label class="tool-chip">
+            <input type="checkbox" id="toolCalculator" checked>
+            <span class="chip-label">🧮 Math Engine</span>
+          </label>
+          <label class="tool-chip">
+            <input type="checkbox" id="toolWeather" checked>
+            <span class="chip-label">🌤️ Weather API</span>
+          </label>
+          <label class="tool-chip">
+            <input type="checkbox" id="toolCodeInterpreter" checked>
+            <span class="chip-label">⚡ Python Runner</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="footer-btn" id="openSettingsBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          System & Model Config
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Top Navigation Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="mobile-toggle-btn" id="toggleSidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="model-selector-wrapper">
+            <span class="label">Model:</span>
+            <select id="modelSelect" class="styled-select">
+              <option value="gemini-3.6-flash">Gemini 3.6 Flash (High Speed)</option>
+              <option value="gemini-2.0-pro">Gemini 2.0 Pro (Complex Reasoning)</option>
+              <option value="custom-sim">Local ReAct Agent (Interactive Simulator)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="header-btn" id="inspectMemoryBtn" title="Inspect LLM Context Payload">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Raw Context Payload</span>
+          </button>
+          <button class="header-btn primary-header-btn" id="apiKeyConfigBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>API Connection</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Messages Scroll Area -->
+      <div class="chat-viewport" id="chatViewport">
+        <!-- Hero Welcome Screen -->
+        <div class="welcome-container" id="welcomeContainer">
+          <div class="welcome-badge">AI AGENT ARCHITECTURE DEMO</div>
+          <h1 class="welcome-title">How ChatGPT & Modern AI Agents Work</h1>
+          <p class="welcome-subtitle">
+            This interactive studio demonstrates the 5 key layers of building a ChatGPT-like agent: 
+            <strong>Prompt Engineering</strong>, <strong>Context Memory</strong>, <strong>Streaming</strong>, <strong>ReAct Tool Calling</strong>, and <strong>LLM API integration</strong>.
+          </p>
+
+          <div class="starter-cards">
+            <button class="starter-card" data-prompt="Explain how ChatGPT handles conversation history and sliding memory windows with code examples.">
+              <div class="card-icon">🧠</div>
+              <div class="card-title">Memory & Context Window</div>
+              <div class="card-desc">How messages are tracked, tokens calculated, and old state clipped.</div>
+            </button>
+            <button class="starter-card" data-prompt="Show me a step-by-step example of how an AI Agent uses function calling to search the web or calculate math.">
+              <div class="card-icon">🛠️</div>
+              <div class="card-title">ReAct Tool Calling Loop</div>
+              <div class="card-desc">Watch the agent call tools (Web Search, Math Engine, Weather) live!</div>
+            </button>
+            <button class="starter-card" data-prompt="What is the Python code to stream responses token by token like ChatGPT?">
+              <div class="card-icon">⚡</div>
+              <div class="card-title">Streaming Responses (SSE)</div>
+              <div class="card-desc">How server-sent events stream tokens to the user interface.</div>
+            </button>
+            <button class="starter-card" data-prompt="What's the weather in Tokyo right now? Calculate 15% tip on $184.50.">
+              <div class="card-icon">🌤️</div>
+              <div class="card-title">Multi-Tool Agent Test</div>
+              <div class="card-desc">Triggers multiple tool calls in a single turn.</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="messages-list" id="messagesList"></div>
+      </div>
+
+      <!-- Input Bar Container -->
+      <div class="input-container">
+        <form id="chatForm" class="input-card">
+          <div class="active-tools-indicator" id="activeToolsIndicator">
+            <span class="indicator-dot"></span>
+            <span class="indicator-text">Agent Tools Enabled: Web Search, Math, Weather, Code Runner</span>
+          </div>
+
+          <div class="textarea-wrapper">
+            <textarea 
+              id="userPrompt" 
+              placeholder="Ask the AI agent anything or instruct it to perform a tool task..." 
+              rows="1" 
+              required
+            ></textarea>
+            
+            <div class="input-actions">
+              <div class="mode-badge" id="modeBadge">Demo Mode (Simulated LLM + Live ReAct)</div>
+              <button type="submit" class="send-btn" id="sendBtn" title="Send Message">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="disclaimer">
+          Nexus Agent Studio • Demonstrating standard LLM Agent Architecture & Tool Execution Loops
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal: Settings & Hyperparameters Drawer -->
+    <div class="modal-overlay" id="settingsModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Agent Configuration & Hyperparameters</h3>
+          <button class="close-btn" id="closeSettingsBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="systemPromptInput">System Instruction (Agent Persona)</label>
+            <textarea id="systemPromptInput" rows="4" class="styled-textarea"></textarea>
+            <small class="help-text">This defines the core identity, guidelines, and safety constraints of the model.</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Temperature (<span id="tempValue">0.7</span>)</label>
+              <input type="range" id="tempSlider" min="0" max="1" step="0.05" value="0.7">
+              <small class="help-text">Higher values = more creative, lower values = deterministic.</small>
+            </div>
+            <div class="form-group flex-1">
+              <label>Max Context History Length</label>
+              <select id="maxHistorySelect" class="styled-select">
+                <option value="10">Last 10 Messages</option>
+                <option value="20" selected>Last 20 Messages</option>
+                <option value="50">Last 50 Messages</option>
+                <option value="100">Unlimited (Full Context)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="apiKeyInput">Gemini / LLM API Key (Optional for Live API Mode)</label>
+            <input type="password" id="apiKeyInput" class="styled-input" placeholder="Enter API key or leave blank for Simulated Agent mode...">
+            <small class="help-text">Your API key remains local in browser memory and is never stored on external servers.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="resetSystemBtn">Reset Defaults</button>
+          <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Raw Context Inspector -->
+    <div class="modal-overlay" id="memoryModal">
+      <div class="modal-card wide-modal">
+        <div class="modal-header">
+          <h3>Raw LLM Context & State Inspector</h3>
+          <button class="close-btn" id="closeMemoryBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">This is the exact JSON structure sent to the LLM API on each turn, containing System Instructions, Conversation History, and Tool Schemas.</p>
+          <pre class="json-code-block" id="jsonPayloadPreview"></pre>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="copyJsonBtn">Copy JSON Payload</button>
+          <button class="btn btn-primary" id="closeMemoryFooterBtn">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
